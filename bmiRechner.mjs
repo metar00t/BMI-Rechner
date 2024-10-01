@@ -5,19 +5,44 @@ import promptSync from 'prompt-sync';
 
 const prompt = promptSync();
 
-const geschlecht = prompt("Sind Sie Männlich oder Weiblich? ");
+const geschlecht = prompt("Sind Sie Männlich oder Weiblich? (m/w) ");
+// Fehlermeldung wenn der Nutzer dennoch ein "falsches" Geschlecht eingegeben hat
+if(geschlecht != "m" && geschlecht != "w")
+{
+    console.log("In der Klammer sind die Eingabemöglichkeiten genannt.\n");
+    process.exit(0);
+}
 const gewicht = prompt("Bitte geben Sie ihr Gewicht in kg ein: ");
+// Fehlermeldung bei einem ungültigem Gewicht
+if(gewicht < 0) 
+{
+    console.log("Dieser Wert ist nicht gültig (Negative Eingabe)\n");
+    process.exit(0);
+}
 const groesse = prompt("Geben Sie ihre Größe in Meter ein: ");
+// Fehlermeldung bei einer ungültigen Größe
+if(groesse < 0)
+{
+    console.log("Dieser Wert ist nicht gültig (Negative Eingabe)\n");
+    process.exit(0);
+}
 
 function erfrageNutzerDaten(geschlecht,gewicht,groesse)
 {
-    var output = arbeiter.berechneBMI(geschlecht,gewicht,groesse);
-    return output;
+    var ausgabe = arbeiter.berechneBMI(geschlecht,gewicht,groesse);
+    return ausgabe;
 }
 
 var resultat = erfrageNutzerDaten(geschlecht,gewicht,groesse);
 
-sprecher.welches_BMI_hat_der_nutzer(resultat);
+if(geschlecht.toLowerCase() == "m")
+{
+    sprecher.ausgabe_bmi_mann(resultat);
+}
+else if(geschlecht.toLowerCase() == "w")
+{
+    sprecher.ausgabe_bmi_frau(resultat);
+}
 
 /*  
     Formel zur Berechnung des BMI:
